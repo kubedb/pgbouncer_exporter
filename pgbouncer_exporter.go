@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/log"
 	"github.com/prometheus/common/version"
 )
@@ -46,7 +47,9 @@ func main() {
 	flag.Parse()
 
 	if *showVersion {
-		fmt.Fprintln(os.Stdout, version.Print("pgbouncer_exporter"))
+		if _, err := fmt.Fprintln(os.Stdout, version.Print("pgbouncer_exporter")); err!= nil{
+			log.Infoln("Version err : ", err)
+		}
 		os.Exit(0)
 	}
 
@@ -56,9 +59,13 @@ func main() {
 
 	log.Infoln("Starting pgbouncer exporter version: ", version.Info())
 
-	http.Handle(*metricsPath, prometheus.Handler())
+	http.Handle(*metricsPath, promhttp.Handler())
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte(fmt.Sprintf(indexHTML, *metricsPath)))
+		//Handle func for root. Contains a link to exposed metrics
+		if _, err := w.Write([]byte(fmt.Sprintf(indexHTML, *metricsPath))) ; err!= nil{
+			log.Infoln("Write err : ", err)
+		}
 	})
 
 	log.Fatal(http.ListenAndServe(*listenAddress, nil))

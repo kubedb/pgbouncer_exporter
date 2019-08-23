@@ -6,8 +6,10 @@ pkgs         = $(shell $(GO) list ./... | grep -v /vendor/)
 
 PREFIX                  ?= $(shell pwd)
 BIN_DIR                 ?= $(shell pwd)
-DOCKER_IMAGE_NAME       ?= pgbouncer-exporter
-DOCKER_IMAGE_TAG        ?= $(subst /,-,$(shell git rev-parse --abbrev-ref HEAD))
+REGISTRY       ?= kubedb
+DOCKER_IMAGE_NAME       ?= pgbouncer_exporter
+# DOCKER_IMAGE_TAG        ?= $(subst /,-,$(shell git rev-parse --abbrev-ref HEAD))
+DOCKER_IMAGE_TAG        ?= latest
 
 
 ifeq ($(OS),Windows_NT)
@@ -20,13 +22,15 @@ build: $(PROMU)
 	@echo ">> building binaries"
 	@$(PROMU) build --prefix $(PREFIX)
 
-tarball: $(PROMU)
-	@echo ">> building release tarball"
-	@$(PROMU) tarball --prefix $(PREFIX) $(BIN_DIR)
-
 docker:
+	@echo ">> building binary"
+	@export CGO_ENABLED=0
+	@go build -o pb_prom_exporter .
+	@chmod +x pb_prom_exporter
 	@echo ">> building docker image"
-	@docker build -t "$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)" .
+	@docker build -t "$(REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)" .
+	@rm -rf pb_prom_exporter
+# 	@docker push "$(REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
 
 $(GOPATH)/bin/promu promu:
 	@GOOS= GOARCH= $(GO) get -u github.com/prometheus/promu
