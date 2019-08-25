@@ -24,13 +24,12 @@ build: $(PROMU)
 
 docker:
 	@echo ">> building binary"
-	@export CGO_ENABLED=0
-	@go build -o pb_prom_exporter .
-	@chmod +x pb_prom_exporter
+	@CGO_ENABLED=0 go build -o pgbouncer_exporter_tmp_bin .
+# 	@chmod +x pgbouncer_exporter_tmp_bin
 	@echo ">> building docker image"
 	@docker build -t "$(REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)" .
-	@rm -rf pb_prom_exporter
-# 	@docker push "$(REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
+	@rm -rf pgbouncer_exporter_tmp_bin
+ 	@docker push "$(REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
 
 $(GOPATH)/bin/promu promu:
 	@GOOS= GOARCH= $(GO) get -u github.com/prometheus/promu

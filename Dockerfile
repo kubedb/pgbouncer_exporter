@@ -1,3 +1,3 @@
 FROM alpine:3.10
-COPY pb_prom_exporter /usr/bin/
-ENTRYPOINT ["pb_prom_exporter"]
+COPY pgbouncer_exporter_tmp_bin /usr/bin/
+ENTRYPOINT ["pgbouncer_exporter_tmp_bin"]
