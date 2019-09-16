@@ -41,13 +41,13 @@ func main() {
 		listenAddress           = flag.String("web.listen-address", ":9127", "Address on which to expose metrics and web interface.")
 		connectionStringPointer = flag.String("pgBouncer.connectionString", "postgres://postgres:@localhost:6543/pgbouncer?sslmode=disable",
 			"Connection string for accessing pgBouncer. Can also be set using environment variable DATA_SOURCE_NAME")
-		metricsPath             = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
+		metricsPath = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 	)
 
 	flag.Parse()
 
 	if *showVersion {
-		if _, err := fmt.Fprintln(os.Stdout, version.Print("pgbouncer_exporter")); err!= nil{
+		if _, err := fmt.Fprintln(os.Stdout, version.Print("pgbouncer_exporter")); err != nil {
 			log.Infoln("Version err : ", err)
 		}
 		os.Exit(0)
@@ -63,7 +63,7 @@ func main() {
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		//Handle func for root. Contains a link to exposed metrics
-		if _, err := w.Write([]byte(fmt.Sprintf(indexHTML, *metricsPath))) ; err!= nil{
+		if _, err := w.Write([]byte(fmt.Sprintf(indexHTML, *metricsPath))); err != nil {
 			log.Infoln("Write err : ", err)
 		}
 	})
