@@ -1,7 +1,7 @@
 # PgBouncer exporter
 
 Prometheus exporter for PgBouncer.
-Exports metrics at `localhost:56790/metrics`
+Exports metrics at `localhost:9127/metrics`
 
 ## Building and running
 Build the binary
@@ -20,7 +20,7 @@ Available configuration flags:
 ```shell
 - pgBouncer.connectionString: Connection string for accessing pgBouncer. The default is "postgres://postgres:@localhost:6543/pgbouncer?sslmode=disable". Connection string Can also be set using environment variable DATA_SOURCE_NAME.
 - version: Print version information.
-- web.listen-address: Address on which to expose metrics and web interface. (default ":56790")
+- web.listen-address: Address on which to expose metrics and web interface. (default ":9127")
 - web.telemetry-path: Path under which to expose metrics. (default "/metrics")
 ```
 To see all available configuration flags:
