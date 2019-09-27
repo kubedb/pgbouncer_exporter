@@ -84,7 +84,6 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) {
 	}
 }
 
-
 // the scrape fails, and a slice of errors if they were non-fatal.
 func (m *MetricMapFromNamespace) Query(ch chan<- prometheus.Metric, db *sql.DB) ([]error, error) {
 	query := fmt.Sprintf("SHOW %s;", m.namespace)

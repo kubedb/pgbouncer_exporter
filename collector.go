@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"github.com/lib/pq"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/common/log"
 	"math"
 	"strconv"
 	"time"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/common/log"
 )
 
 //NewExporter creates a new exporter in a namespace for a given connection string of a pgbouncer server. namespace is always pgbouncer
