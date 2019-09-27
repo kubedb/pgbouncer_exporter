@@ -22,10 +22,10 @@ type rowResult struct {
 	ColumnData  []interface{}
 }
 
-type RowConverter func(*MetricMapNamespace, *rowResult, chan<- prometheus.Metric) ([]error, error)
+type RowConverter func(*MetricMapFromNamespace, *rowResult, chan<- prometheus.Metric) ([]error, error)
 
 // Groups metric maps under a shared set of labels
-type MetricMapNamespace struct {
+type MetricMapFromNamespace struct {
 	namespace      string
 	columnMappings map[string]MetricMap // Column mappings in this namespace
 	labels         []string
@@ -57,7 +57,7 @@ type Exporter struct {
 	duration, up, error prometheus.Gauge
 	totalScrapes        prometheus.Counter
 
-	metricMap []*MetricMapNamespace
+	metricMap []*MetricMapFromNamespace
 
 	db *sql.DB
 }

@@ -41,9 +41,9 @@ func main() {
 		listenAddress           = flag.String("web.listen-address", ":9127", "Address on which to expose metrics and web interface.")
 		connectionStringPointer = flag.String("pgBouncer.connectionString", "postgres://postgres:@localhost:6543/pgbouncer?sslmode=disable",
 			"Connection string for accessing pgBouncer. Can also be set using environment variable DATA_SOURCE_NAME")
+		//"postgres://YourUserName:YourPassword@YourHost:5432/pgbouncer";
 		metricsPath = flag.String("web.telemetry-path", "/metrics", "Path under which to expose metrics.")
 	)
-
 	flag.Parse()
 
 	if *showVersion {

@@ -50,7 +50,7 @@ endif
 OS               := $(if $(GOOS),$(GOOS),$(shell go env GOOS))
 ARCH             := $(if $(GOARCH),$(GOARCH),$(shell go env GOARCH))
 # TAG              := $(VERSION)
-TAG              := 0.0.3
+TAG              := latest
 PREFIX           ?= $(shell pwd)
 DOCKER_IMAGE     ?= $(BIN)
 
@@ -61,16 +61,20 @@ else
 endif
 
 build: $(PROMU)
-	@echo ">> building binaries"
+	@echo ">> building binary"
 	@$(PROMU) build --prefix $(PREFIX)
 
 container:
 	@echo ">> building binary"
 	@CGO_ENABLED=0 go build -o $(BIN) .
-# 	@chmod +x pgbouncer_exporter_tmp_bin
+# 	@chmod +x $(BIN)
 	@echo ">> building docker image"
 	@docker build -t "$(REGISTRY)/$(DOCKER_IMAGE):$(TAG)" .
-# 	@rm -rf $(BIN)
+	@rm -rf $(BIN)
+
+bin:
+	@echo ">> building binary with cgo enabled"
+	@CGO_ENABLED=0 go build -o $(BIN) .
 
 push: container
 	@echo ">> pushing image"
