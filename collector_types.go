@@ -117,9 +117,9 @@ var metricRowMaps = map[string]map[string]ColumnMapping{
 		"port":                {LABEL, "", ""},
 		"database":            {LABEL, "", ""},
 		"force_user":          {LABEL, "", ""},
-		"pool_size":           {GAUGE, "", "Maximum number of pool backend connections"},
-		"reserve_pool":        {GAUGE, "", "Maximum amount that the pool size can be exceeded temporarily"},
-		"pool_mode":           {LABEL, "", ""},
+		"pool_size":           {GAUGE, "", "Maximum number of connection per pool for backend connections"},
+		"reserve_pool":        {GAUGE, "reserve_pool_size", "Number of extra connections by which the pool_size can be exceeded temporarily"},
+		"pool_mode":           {LABEL, "", "Nature of connection pooling"},
 		"max_connections":     {GAUGE, "", "Maximum number of client connections allowed"},
 		"current_connections": {GAUGE, "", "Current number of client connections"},
 		"paused":              {GAUGE, "", "Boolean indicating whether a pgbouncer PAUSE is currently active for this database"},
@@ -172,6 +172,7 @@ var metricRowMaps = map[string]map[string]ColumnMapping{
 	},
 }
 
+//TODO: delete commented out part when these changes are confirmed
 /*
 var metricKVMaps = map[string]map[string]ColumnMapping{
 	"config": {
