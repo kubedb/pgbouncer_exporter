@@ -1,3 +1,10 @@
+[![Go Report Card](https://goreportcard.com/badge/kubedb.dev/pgbouncer_exporter)](https://goreportcard.com/report/kubedb.dev/pgbouncer_exporter)
+[![Build Status](https://github.com/kubedb/pgbouncer_exporter/workflows/CI/badge.svg)](https://github.com/kubedb/pgbouncer_exporter/actions?workflow=CI)
+[![codecov](https://codecov.io/gh/kubedb/pgbouncer_exporter/branch/master/graph/badge.svg)](https://codecov.io/gh/kubedb/pgbouncer_exporter)
+[![Slack](http://slack.kubernetes.io/badge.svg)](http://slack.kubernetes.io/#kubedb)
+[![mailing list](https://img.shields.io/badge/mailing_list-join-blue.svg)](https://groups.google.com/forum/#!forum/kubedb)
+[![Twitter](https://img.shields.io/twitter/follow/kubedb.svg?style=social&logo=twitter&label=Follow)](https://twitter.com/intent/follow?screen_name=kubedb)
+
 # PgBouncer exporter
 
 Prometheus exporter for PgBouncer.
@@ -6,7 +13,7 @@ Exports metrics at `localhost:9127/metrics`
 ## Building and running
 Build the binary
 ```
-$make build
+$make
 ```
 Export PgBouncer admin password using environment variable
 ```

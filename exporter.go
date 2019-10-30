@@ -1,12 +1,29 @@
+/*
+Copyright 2019 The KubeDB Authors.
+Copyright (c) 2017 Kristoffer K Larsen <kristoffer@larsen.so>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://opensource.org/licenses/MIT
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
 import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/common/log"
-	"time"
 )
 
 // Describe implements prometheus.Collector.
@@ -114,7 +131,7 @@ func (m *MetricMapFromNamespace) Query(ch chan<- prometheus.Metric, db *sql.DB) 
 		scanArgs[i] = &(result.ColumnData[i])
 	}
 
-	nonfatalErrors := []error{}
+	var nonfatalErrors []error
 
 	for rows.Next() {
 		err = rows.Scan(scanArgs...)
@@ -131,29 +148,8 @@ func (m *MetricMapFromNamespace) Query(ch chan<- prometheus.Metric, db *sql.DB) 
 		}
 	}
 	if err := rows.Err(); err != nil {
-		log.Errorf("Failed scaning all rows due to scan failure: error was; %s", err)
-		nonfatalErrors = append(nonfatalErrors, errors.New(fmt.Sprintf("Failed to consume all rows due to: %s", err)))
+		log.Errorf("Failed scanning all rows due to scan failure: error was; %s", err)
+		nonfatalErrors = append(nonfatalErrors, fmt.Errorf("failed to consume all rows due to: %s", err))
 	}
 	return nonfatalErrors, nil
-}
-
-// Convert database.sql to string for Prometheus labels. Null types are mapped to empty strings.
-func dbToString(t interface{}) (string, bool) {
-	switch v := t.(type) {
-	case int64:
-		return fmt.Sprintf("%v", v), true
-	case float64:
-		return fmt.Sprintf("%v", v), true
-	case time.Time:
-		return fmt.Sprintf("%v", v.Unix()), true
-	case nil:
-		return "", true
-	case []byte:
-		// Try and convert to string
-		return string(v), true
-	case string:
-		return v, true
-	default:
-		return "", false
-	}
 }

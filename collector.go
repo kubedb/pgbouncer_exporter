@@ -1,15 +1,32 @@
+/*
+Copyright 2019 The KubeDB Authors.
+Copyright (c) 2017 Kristoffer K Larsen <kristoffer@larsen.so>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://opensource.org/licenses/MIT
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 package main
 
 import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/lib/pq"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/common/log"
 	"math"
 	"strconv"
 	"time"
+
+	"github.com/lib/pq"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/common/log"
 )
 
 //NewExporter creates a new exporter in a namespace for a given connection string of a pgbouncer server. namespace is always pgbouncer
