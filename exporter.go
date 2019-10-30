@@ -76,12 +76,14 @@ func (e *Exporter) scrape(ch chan<- prometheus.Metric) {
 	e.error.Set(0)
 	e.totalScrapes.Inc()
 
-	if err := e.db.Ping(); err != nil {
-		log.Errorf("Backend is down, failed to connect: %s", err)
+	rows, err := e.db.Query("SHOW STATS")
+	if err != nil {
+		log.Errorf("error pinging pgbouncer: %q", err)
 		e.error.Set(1)
 		e.up.Set(0)
 		return
 	}
+	_ = rows.Close()
 	log.Debug("Backend is up, proceeding with scrape")
 	e.up.Set(1)
 
